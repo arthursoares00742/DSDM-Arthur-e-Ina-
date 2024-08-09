@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:consumo_agua/database/dao/aguadao.dart';
 import 'package:consumo_agua/model/agua.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 // import 'package:intl/intl.dart';
 
@@ -17,7 +18,6 @@ void main() async {
   // insertDia(umdia);
 
   List dados = await findall();
-
   debugPrint(dados.toString());
 
   runApp(MaterialApp(
@@ -40,18 +40,55 @@ class TelaPrincipal extends StatelessWidget {
           backgroundColor: const Color.fromRGBO(0, 151, 178, 1)),
       body: ListView(
         children: [
-          ListTile(
-            title: Text("VOCÊ JÁ BEBEU + this.bebeu HOJE"),
-            trailing: Image.asset("img/agua.png"),
-          ),
-          ListTile(
-            leading: null,
-            title: Center(
-                child: Text(
-                    "Faltam apenas + this.quantia para você alcançar a sua meta diária.",
-                    style: TextStyle(color: Colors.white))),
-            tileColor: Color.fromRGBO(0, 151, 178, 1),
-          ),
+          FutureBuilder(
+              initialData: [],
+              future: getConsumo(),
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.none:
+                    return const Center(
+                        child: Text(
+                            "Houve um erro de Conexão com o Banco de Dados"));
+                  case ConnectionState.active:
+                  case ConnectionState.waiting:
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  case ConnectionState.done:
+                    String consumo = snapshot.data as String;
+
+                    return ListTile(
+                      title: Center(
+                          child: Text("VOCÊ JÁ BEBEU " + consumo + "ml HOJE")),
+                      trailing: Image.asset("img/agua.png"),
+                    );
+                }
+              }),
+          FutureBuilder(
+              initialData: [],
+              future: getQuantia(),
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.none:
+                    return const Center(
+                        child: Text(
+                            "Houve um erro de Conexão com o Banco de Dados"));
+                  case ConnectionState.active:
+                  case ConnectionState.waiting:
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  case ConnectionState.done:
+                    String quantiatotal = snapshot.data as String;
+
+                    return ListTile(
+                      title: Center(
+                          child: Text(quantiatotal,
+                              style: TextStyle(color: Colors.white))),
+                      tileColor: Color.fromRGBO(0, 151, 178, 1),
+                    );
+                }
+              }),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -71,7 +108,12 @@ class TelaPrincipal extends StatelessWidget {
   }
 }
 
-class Cadastro extends StatelessWidget {
+class Cadastro extends StatefulWidget {
+  @override
+  State<Cadastro> createState() => _CadastroState();
+}
+
+class _CadastroState extends State<Cadastro> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,9 +131,15 @@ class Cadastro extends StatelessWidget {
             onPressed: () {
               Agua bebi = Agua(data: "2024-07-26", consumo: 250.0);
               insertDia(bebi);
+              setState(() {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TelaPrincipal(),
+                    )).then((value) => null);
+              });
 
-              debugPrint("Coisas salvas: " + findall().toString());
-
+              // debugPrint("Coisas salvas: " + findall().toString());
               Future<String> consumo = getConsumo();
               String consumoString = '';
               consumo.then(
@@ -110,8 +158,14 @@ class Cadastro extends StatelessWidget {
             onPressed: () {
               Agua bebi = Agua(data: "2024-06-26", consumo: 500.0);
               insertDia(bebi);
-
-              debugPrint("Coisas salvas: " + findall().toString());
+              setState(() {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TelaPrincipal(),
+                    )).then((value) => null);
+              });
+              // debugPrint("Coisas salvas: " + findall().toString());
 
               Future<String> consumo = getConsumo();
               String consumoString = '';
