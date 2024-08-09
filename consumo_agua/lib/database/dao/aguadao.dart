@@ -30,10 +30,10 @@ Future<List<Map<String, dynamic>>> findall() async {
   return dados;
 }
 
-Future<String> getConsumo(data) async {
-  DateTime now = DateTime.now();
-  String dateFormat = DateFormat('yyyy-MM-dd').format(now);
-  Agua.data = dateFormat;
+Future<String> getConsumo() async {
+  // DateTime now = DateTime.now();
+  // String dateFormat = DateFormat('yyyy-MM-dd').format(now);
+  
    // requesitando do banco
   Database db = await getDatabase();
   List<Map<String, dynamic>> consumototal = await db

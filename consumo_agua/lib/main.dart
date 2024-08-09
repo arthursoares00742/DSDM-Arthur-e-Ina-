@@ -92,7 +92,7 @@ class Cadastro extends StatelessWidget {
 
               debugPrint("Coisas salvas: " + findall().toString());
 
-              Future<String> consumo = getConsumo(Agua);
+              Future<String> consumo = getConsumo();
               String consumoString = '';
               consumo.then(
                 (meuconsumo) {
@@ -113,7 +113,7 @@ class Cadastro extends StatelessWidget {
 
               debugPrint("Coisas salvas: " + findall().toString());
 
-              Future<String> consumo = getConsumo(data);
+              Future<String> consumo = getConsumo();
               String consumoString = '';
               consumo.then(
                 (meuconsumo) {
