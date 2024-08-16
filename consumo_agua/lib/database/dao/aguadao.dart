@@ -79,6 +79,8 @@ Future<String> getQuantia() async {
   {
     if (consumo == meta) {
       return "Parábens, você atingiu a sua meta diária!";
+    } else if (consumo == 0) {
+      return "Comece para atingir a sua meta!";
     } else if (consumo < meta) {
       return "Ainda faltam $quantia ml para você atingir a sua meta diária!";
     } else if (consumo > meta) {

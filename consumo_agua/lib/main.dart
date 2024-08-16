@@ -4,6 +4,7 @@ import 'package:consumo_agua/database/dao/aguadao.dart';
 import 'package:consumo_agua/model/agua.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 // import 'package:intl/intl.dart';
 
@@ -36,7 +37,10 @@ class TelaPrincipal extends StatelessWidget {
       appBar: AppBar(
           title: const Center(
               child: Text("Meu consumo de água",
-                  style: TextStyle(color: Colors.white))),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ))),
           backgroundColor: const Color.fromRGBO(0, 151, 178, 1)),
       body: ListView(
         children: [
@@ -59,8 +63,30 @@ class TelaPrincipal extends StatelessWidget {
 
                     return ListTile(
                       title: Center(
-                          child: Text("VOCÊ JÁ BEBEU " + consumo + "ml HOJE")),
-                      trailing: Image.asset("img/agua.png"),
+                        child: RichText(
+                            text: TextSpan(
+                                text: "VOCÊ JÁ BEBEU ",
+                                style: TextStyle(
+                                    fontSize: 34.0, color: Colors.black),
+                                children: <TextSpan>[
+                              TextSpan(
+                                text: consumo + "ml",
+                                style: TextStyle(
+                                  fontSize: 34.0,
+                                  color: Color.fromRGBO(0, 151, 178, 1),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              TextSpan(
+                                text: " HOJE!",
+                                style: TextStyle(
+                                    fontSize: 34.0, color: Colors.black),
+                              ),
+                            ])),
+                      ),
+                      // trailing: Image.asset("img/agua.png"),
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 50.0),
                     );
                 }
               }),
@@ -84,11 +110,29 @@ class TelaPrincipal extends StatelessWidget {
                     return ListTile(
                       title: Center(
                           child: Text(quantiatotal,
-                              style: TextStyle(color: Colors.white))),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 24.0,
+                              ))),
                       tileColor: Color.fromRGBO(0, 151, 178, 1),
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 20.0,
+                          vertical: 10.0), // Espaçamento interno
                     );
                 }
               }),
+          SizedBox(height: 20),
+          Expanded(
+              child: Container(
+            color: Colors.white,
+            child: Lottie.asset(
+              'animacao/animacao1.json', // Caminho para o arquivo Lottie
+              width: 20,
+              height: 200,
+              fit: BoxFit.contain,
+              repeat: true,
+            ),
+          )),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -119,11 +163,16 @@ class _CadastroState extends State<Cadastro> {
     return Scaffold(
       appBar: AppBar(
         title: const Center(
-            child: Text("Hidrate-se", style: TextStyle(color: Colors.white))),
+            child: Text("Hidratando-se",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ))),
         backgroundColor: const Color.fromRGBO(0, 151, 178, 1),
       ),
       body: ListView(
         children: [
+          SizedBox(height: 10),
           TextButton(
             style: TextButton.styleFrom(
               backgroundColor: const Color.fromRGBO(0, 151, 178, 1),
@@ -149,8 +198,13 @@ class _CadastroState extends State<Cadastro> {
                 },
               );
             },
-            child: const Text('+1 COPO', style: TextStyle(color: Colors.white)),
+            child: const Text('+1 COPO',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                )),
           ),
+          SizedBox(height: 10),
           TextButton(
             style: TextButton.styleFrom(
               backgroundColor: const Color.fromRGBO(0, 151, 178, 1),
@@ -177,16 +231,133 @@ class _CadastroState extends State<Cadastro> {
               );
             },
             child: const Text('+1 GARRAFINHA',
-                style: TextStyle(color: Colors.white)),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                )),
           ),
-          ListTile(
-              title: Text("Lembre-se", style: TextStyle(color: Colors.white)),
-              subtitle:
-                  Text("DA SUA META!", style: TextStyle(color: Colors.white)),
-              tileColor: Color.fromRGBO(0, 151, 178, 1))
+          SizedBox(height: 20),
+          Center(
+            child: Container(
+              width: 200.0,
+              height: 100.0,
+              child: ListTile(
+                  title: Text("Lembre-se",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 30.0,
+                          fontWeight: FontWeight.bold)),
+                  subtitle: Text("DA SUA META!",
+                      style: TextStyle(
+                        color: Colors.white,
+                      )),
+                  tileColor: Color.fromRGBO(0, 151, 178, 1)),
+            ),
+          )
         ],
       ),
       floatingActionButton: null,
     );
   }
 }
+
+// class  NoificationRepository { 
+// static AndroidNotificationChannel channel = const  AndroidNotificationChannel ( 
+//     'Channel_id' , 
+//     'Channel_title' , 
+//     description: 'Este canal é usado para notificações importantes.' , 
+//     importance: Importance.high, 
+//     playSound: true ,
+//    ) ; 
+
+// // Criando canal de notificação 
+// static  Future < void > notificationPlugin () async { 
+// await flutterLocalNotificationsPlugin 
+// .resolvePlatformSpecificImplementation< 
+// AndroidFlutterLocalNotificationsPlugin>() 
+// ?.createNotificationChannel(ch` para permitir notificação 
+// // solicitando permissão para enviar notificação 
+// await flutterLocalNotificationsPlugin 
+// .resolvePlatformSpecificImplementation< 
+// AndroidFlutterLocalNotificationsPlugin>() 
+// ?.requestNotificationsPermission(); 
+// // Inicialização do Android
+//  AndroidInitializationSettings initializationSettingsAndroid = 
+// const  AndroidInitializationSettings ( '@mipmap/ic_launcher' ) ; 
+// // Inicialização do iOS
+//  DarwinInitializationSettings iosInitializationSettings = 
+// DarwinInitializationSettings( 
+//   onDidReceiveLocalNotification: (id, title, body, payload) async { 
+//     return  await showDialog( 
+//       contexto: Messaging.openContext, 
+//       construtor: (BuildContext context) => CupertinoAlertDialog( 
+//         título: Text(title ?? "" ), 
+//         conteúdo: Text(body ?? "" ), 
+//         ações: [ 
+//           CupertinoDialogAction( 
+//             isDefaultAction: true , 
+//             filho: const  Text ( 'Ok' ), 
+//             onPressed: () async { 
+//               Navigator.of(context, rootNavigator: true ).pop(); 
+//               await Navigator.push( 
+//                 contexto, 
+//                 MaterialPageRoute( 
+//                    construtor: (contexto) => Screen( 
+//                    texto: '' , 
+//                   ), 
+//                 ), 
+//               ); 
+//             }, 
+//           ) 
+//         ], 
+//       ),
+//     ); 
+//   }, 
+// ); 
+// // Inicializando as configurações do Android e iOS
+//  InitializationSettings initializationSettings = InitializationSettings( 
+//   android: initializationSettingsAndroid, 
+//   iOS: iosInitializationSettings, 
+// ); 
+// // Inicializando a notificação local do flutter
+//  flutterLocalNotificationsPlugin.initialize(initializationSettings, 
+//   onDidReceiveNotificationResponse: (detalhes) async { 
+//     await Navigator.push( 
+//       Messaging.openContext, 
+//       MaterialPageRoute< void >( 
+//       builder: (context) => Screen(text: details.toString())), 
+//       ); 
+//     } 
+//   ); 
+// } 
+// }
+
+// void  showNotification () { 
+//   setState (() { 
+//     _counter++; 
+//   }); 
+// flutterLocalNotificationsPlugin. show ( 
+//   0 , 
+//   "Testando $_counter " , 
+//   "Como vai você?" , 
+//   NotificationDetails ( 
+//     android : AndroidNotificationDetails ( 
+//       NoificationRepository.channel.id, 
+//       NoificationRepository.channel.name, 
+//       channelDescription : NoificationRepository.channel.description, 
+//       importance : Importance.high, 
+//       color : Colors.blue, 
+//       playSound : true , 
+//       icon : '@mipmap/ic_launcher' ), 
+//       iOS : const  DarwinNotificationDetails ( 
+//   presentSound : true , presentAlert : true , presentBadge : true )), 
+//   payload : 'Abrir da notificação local' ); 
+//   setState (() { 
+//     messages. add ( 
+//       Message ( 
+//         title : "Testando $_counter " , 
+//         body : "Como vai você?" , 
+//       ), 
+//     ); 
+//   }); 
+// }
