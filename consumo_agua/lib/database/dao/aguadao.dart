@@ -77,10 +77,10 @@ Future<String> getQuantia() async {
   int quantia = meta - consumo;
   int extrapolacao = consumo - meta;
   {
-    if (consumo == meta) {
-      return "Parábens, você atingiu a sua meta diária!";
-    } else if (consumo == 0) {
+    if (consumo == 0) {
       return "Comece para atingir a sua meta!";
+    } else if (consumo == meta) {
+      return " Parábens, você atingiu a sua meta diária!";
     } else if (consumo < meta) {
       return "Ainda faltam $quantia ml para você atingir a sua meta diária!";
     } else if (consumo > meta) {

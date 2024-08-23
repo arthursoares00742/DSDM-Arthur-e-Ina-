@@ -1,9 +1,11 @@
 // import 'dart:ffi';
 import 'dart:io';
 import 'package:consumo_agua/database/dao/aguadao.dart';
+import 'package:consumo_agua/local_notification.dart';
 import 'package:consumo_agua/model/agua.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+// import 'package:flutter/widgets.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 // import 'package:intl/intl.dart';
@@ -121,6 +123,17 @@ class TelaPrincipal extends StatelessWidget {
                     );
                 }
               }),
+          SizedBox(height: 20),
+          ElevatedButton.icon(
+            icon: Icon(Icons.timer_outlined),
+            onPressed: () {
+              LocalNotifications.showPeriodicNotifications(
+                  title: "Periodic Notification",
+                  body: "This is a Periodic Notification",
+                  payload: "This is periodic data");
+            },
+            label: Text("Notificações periódicas"),
+          ),
           SizedBox(height: 20),
           Expanded(
               child: Container(
@@ -260,104 +273,62 @@ class _CadastroState extends State<Cadastro> {
     );
   }
 }
+//
 
-// class  NoificationRepository { 
-// static AndroidNotificationChannel channel = const  AndroidNotificationChannel ( 
-//     'Channel_id' , 
-//     'Channel_title' , 
-//     description: 'Este canal é usado para notificações importantes.' , 
-//     importance: Importance.high, 
-//     playSound: true ,
-//    ) ; 
+final navigatorKey = GlobalKey<NavigatorState>();
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+void notificacao() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await LocalNotifications.init();
 
-// // Criando canal de notificação 
-// static  Future < void > notificationPlugin () async { 
-// await flutterLocalNotificationsPlugin 
-// .resolvePlatformSpecificImplementation< 
-// AndroidFlutterLocalNotificationsPlugin>() 
-// ?.createNotificationChannel(ch` para permitir notificação 
-// // solicitando permissão para enviar notificação 
-// await flutterLocalNotificationsPlugin 
-// .resolvePlatformSpecificImplementation< 
-// AndroidFlutterLocalNotificationsPlugin>() 
-// ?.requestNotificationsPermission(); 
-// // Inicialização do Android
-//  AndroidInitializationSettings initializationSettingsAndroid = 
-// const  AndroidInitializationSettings ( '@mipmap/ic_launcher' ) ; 
-// // Inicialização do iOS
-//  DarwinInitializationSettings iosInitializationSettings = 
-// DarwinInitializationSettings( 
-//   onDidReceiveLocalNotification: (id, title, body, payload) async { 
-//     return  await showDialog( 
-//       contexto: Messaging.openContext, 
-//       construtor: (BuildContext context) => CupertinoAlertDialog( 
-//         título: Text(title ?? "" ), 
-//         conteúdo: Text(body ?? "" ), 
-//         ações: [ 
-//           CupertinoDialogAction( 
-//             isDefaultAction: true , 
-//             filho: const  Text ( 'Ok' ), 
-//             onPressed: () async { 
-//               Navigator.of(context, rootNavigator: true ).pop(); 
-//               await Navigator.push( 
-//                 contexto, 
-//                 MaterialPageRoute( 
-//                    construtor: (contexto) => Screen( 
-//                    texto: '' , 
-//                   ), 
-//                 ), 
-//               ); 
-//             }, 
-//           ) 
-//         ], 
-//       ),
-//     ); 
-//   }, 
-// ); 
-// // Inicializando as configurações do Android e iOS
-//  InitializationSettings initializationSettings = InitializationSettings( 
-//   android: initializationSettingsAndroid, 
-//   iOS: iosInitializationSettings, 
-// ); 
-// // Inicializando a notificação local do flutter
-//  flutterLocalNotificationsPlugin.initialize(initializationSettings, 
-//   onDidReceiveNotificationResponse: (detalhes) async { 
-//     await Navigator.push( 
-//       Messaging.openContext, 
-//       MaterialPageRoute< void >( 
-//       builder: (context) => Screen(text: details.toString())), 
-//       ); 
-//     } 
-//   ); 
-// } 
-// }
+//  handle in terminated state
+  var initialNotification =
+      await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+  if (initialNotification?.didNotificationLaunchApp == true) {
+    // LocalNotifications.onClickNotification.stream.listen((event) {
+    Future.delayed(Duration(seconds: 3), () {
+      // print(event);
+      navigatorKey.currentState!.pushNamed('/another',
+          arguments: initialNotification?.notificationResponse?.payload);
+    });
+  }
 
-// void  showNotification () { 
-//   setState (() { 
-//     _counter++; 
-//   }); 
-// flutterLocalNotificationsPlugin. show ( 
-//   0 , 
-//   "Testando $_counter " , 
-//   "Como vai você?" , 
-//   NotificationDetails ( 
-//     android : AndroidNotificationDetails ( 
-//       NoificationRepository.channel.id, 
-//       NoificationRepository.channel.name, 
-//       channelDescription : NoificationRepository.channel.description, 
-//       importance : Importance.high, 
-//       color : Colors.blue, 
-//       playSound : true , 
-//       icon : '@mipmap/ic_launcher' ), 
-//       iOS : const  DarwinNotificationDetails ( 
-//   presentSound : true , presentAlert : true , presentBadge : true )), 
-//   payload : 'Abrir da notificação local' ); 
-//   setState (() { 
-//     messages. add ( 
-//       Message ( 
-//         title : "Testando $_counter " , 
-//         body : "Como vai você?" , 
-//       ), 
-//     ); 
-//   }); 
-// }
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      navigatorKey: navigatorKey,
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        // This is the theme of your application.
+        //
+        // TRY THIS: Try running your application with "flutter run". You'll see
+        // the application has a blue toolbar. Then, without quitting the app,
+        // try changing the seedColor in the colorScheme below to Colors.green
+        // and then invoke "hot reload" (save your changes or press the "hot
+        // reload" button in a Flutter-supported IDE, or press "r" if you used
+        // the command line to start the app).
+        //
+        // Notice that the counter didn't reset back to zero; the application
+        // state is not lost during the reload. To reset the state, use hot
+        // restart instead.
+        //
+        // This works for code too, not just values: Most code changes can be
+        // tested with just a hot reload.
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        useMaterial3: true,
+      ),
+      routes: {
+        '/': (context) => const TelaPrincipal(),
+        '/another': (context) => Cadastro(),
+      },
+    );
+  }
+}

@@ -29,29 +29,29 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-        </application>
-    <application>
-        <uses-permission  android:name = "android.permission.RECEIVE_BOOT_COMPLETED" />  
     </application>
-    <receiver> 
-        <intent-filter> 
+</manifest>
+    <!-- <application>
+        <-permission  android:name = "android.permission.RECEIVE_BOOT_COMPLETED" /> 
+    </application > 
+    <receiver > 
+        <intent-filter > 
             <action  android:name = "android.intent.action.BOOT_COMPLETED" /> 
             <action  android:name = "android.intent.action.MY_PACKAGE_REPLACED" /> 
             <action  android:name = "android.intent.action.QUICKBOOT_POWERON" /> 
             <action  android:name = "com.htc.intent.action.QUICKBOOT_POWERON" /> 
         </intent-filter > 
-    </receiver> 
- 
+    </receiver >   -->
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility?hl=en and
          https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
 
          In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. -->
-    <queries>
+    <!-- <queries>
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
         </intent>
-    </queries>
-</manifest>
+    </queries> -->
+
  

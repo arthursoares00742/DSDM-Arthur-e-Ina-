@@ -26,8 +26,12 @@ android {
     namespace "com.example.consumo_agua"
     compileSdk flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
+    defaultConfig {
+        multiDexEnabled true
+    }
 
     compileOptions {
+         coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -64,4 +68,12 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+repositories {
+    google()
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+}
