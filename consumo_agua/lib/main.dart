@@ -61,7 +61,11 @@ class TelaPrincipal extends StatelessWidget {
                       child: CircularProgressIndicator(),
                     );
                   case ConnectionState.done:
-                    String consumo = snapshot.data as String;
+                    String consumo = '0';
+                    if (snapshot.hasData &&
+                        (snapshot.data as String) != "null") {
+                      consumo = snapshot.data as String;
+                    }
 
                     return ListTile(
                       title: Center(
@@ -107,7 +111,10 @@ class TelaPrincipal extends StatelessWidget {
                       child: CircularProgressIndicator(),
                     );
                   case ConnectionState.done:
-                    String quantiatotal = snapshot.data as String;
+                    String quantiatotal = '0';
+                    if (snapshot.hasData) {
+                      quantiatotal = snapshot.data as String;
+                    }
 
                     return ListTile(
                       title: Center(

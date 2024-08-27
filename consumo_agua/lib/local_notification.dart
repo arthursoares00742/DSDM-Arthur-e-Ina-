@@ -1,7 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
 
 class LocalNotifications {
   static final FlutterLocalNotificationsPlugin
@@ -56,7 +54,7 @@ class LocalNotifications {
     const NotificationDetails notificationDetails =
         NotificationDetails(android: androidNotificationDetails);
     await _flutterLocalNotificationsPlugin.periodicallyShow(
-        1, title, body, RepeatInterval.hourly, notificationDetails,
+        1, title, body, RepeatInterval.everyMinute, notificationDetails,
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         payload: payload);
   }
