@@ -2,10 +2,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/database/dao/aguadao.dart';
-import 'package:flutter_application_1/local_notification.dart';
 import 'package:flutter_application_1/model/agua.dart';
 // import 'package:flutter/widgets.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 // import 'package:intl/intl.dart';
@@ -128,17 +126,10 @@ class TelaPrincipal extends StatelessWidget {
                 }
               }),
           const SizedBox(height: 20),
-          ElevatedButton.icon(
-            icon: const Icon(Icons.timer_outlined),
-            onPressed: () {
-              LocalNotifications.showPeriodicNotifications(
-                  title: "Periodic Notification",
-                  body: "This is a Periodic Notification",
-                  payload: "This is periodic data");
-            },
-            label: const Text("Lembre-me de beber!"),
+          const Center(
+            child: SnackBarAlerta(),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           Expanded(
               child: Container(
             color: Colors.white,
@@ -165,6 +156,48 @@ class TelaPrincipal extends StatelessWidget {
         heroTag: "btn1",
         child: const Icon(Icons.add),
       ),
+    );
+  }
+}
+
+class SnackBarAlerta extends StatelessWidget {
+  const SnackBarAlerta({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      child: const Text('Sempre vale a pena clicar'),
+      onPressed: () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            action: SnackBarAction(
+              label: 'Indo beber água',
+              onPressed: () {
+                // Code to execute.
+              },
+            ),
+            content: const Text(
+                'Para manter seu corpo saudável a OMS recomenda que você deixe de ser preguiçoso e vá beber mais água!',
+                style: TextStyle(color: Colors.white, fontSize: 18)),
+            duration: const Duration(seconds: 20),
+            width: 280.0, // Width of the SnackBar.
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20.0, // Inner padding for SnackBar content.
+            ),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            backgroundColor: Color.fromRGBO(0, 151, 178, 1),
+          ),
+        );
+      },
+      style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white,
+          textStyle:
+              TextStyle(fontSize: 18, color: Color.fromRGBO(0, 151, 178, 1)),
+          shadowColor: Colors.black,
+          elevation: 5),
     );
   }
 }
@@ -276,65 +309,6 @@ class _CadastroState extends State<Cadastro> {
         ],
       ),
       floatingActionButton: null,
-    );
-  }
-}
-//
-
-final navigatorKey = GlobalKey<NavigatorState>();
-FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
-void notificacao() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await LocalNotifications.init();
-
-//  handle in terminated state
-  var initialNotification =
-      await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
-  if (initialNotification?.didNotificationLaunchApp == true) {
-    // LocalNotifications.onClickNotification.stream.listen((event) {
-    Future.delayed(const Duration(seconds: 3), () {
-      // print(event);
-      navigatorKey.currentState!.pushNamed('/another',
-          arguments: initialNotification?.notificationResponse?.payload);
-    });
-  }
-
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: navigatorKey,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a blue toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
-      ),
-      routes: {
-        '/': (context) => const TelaPrincipal(),
-        '/another': (context) => const Cadastro(),
-      },
     );
   }
 }
