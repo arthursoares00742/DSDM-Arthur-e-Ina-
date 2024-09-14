@@ -160,9 +160,14 @@ class TelaPrincipal extends StatelessWidget {
   }
 }
 
-class SnackBarAlerta extends StatelessWidget {
+class SnackBarAlerta extends StatefulWidget {
   const SnackBarAlerta({super.key});
 
+  @override
+  State<SnackBarAlerta> createState() => _SnackBarAlertaState();
+}
+
+class _SnackBarAlertaState extends State<SnackBarAlerta> {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
@@ -173,7 +178,13 @@ class SnackBarAlerta extends StatelessWidget {
             action: SnackBarAction(
               label: 'Indo beber água',
               onPressed: () {
-                // Code to execute.
+                setState(() {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const Cadastro(),
+                      )).then((value) => null);
+                });
               },
             ),
             content: const Text(
