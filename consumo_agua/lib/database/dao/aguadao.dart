@@ -25,9 +25,9 @@ Future<List<Map<String, dynamic>>> findall() async {
   List<Map<String, dynamic>> dados =
       await db.query('agua'); // requesitando do banco
 
-  dados.forEach((agua) {
+  for (var agua in dados) {
     print(agua);
-  });
+  }
   return dados;
 }
 
@@ -40,7 +40,7 @@ Future<String> getConsumo() async {
   // requesitando do banco
   Database db = await getDatabase();
   List<Map<String, dynamic>> consumototal = await db.rawQuery(
-      "select sum(consumo) from agua WHERE data LIKE '" + dateFormat + "'");
+      "select sum(consumo) from agua WHERE data LIKE '$dateFormat'");
 
   // consumototal.forEach((agua) {
   //   print(agua);
@@ -52,7 +52,7 @@ Future<String> getConsumoPorData(String data) async {
   // requesitando do banco
   Database db = await getDatabase();
   List<Map<String, dynamic>> consumototal = await db
-      .rawQuery("select sum(consumo) from agua WHERE data LIKE '" + data + "'");
+      .rawQuery("select sum(consumo) from agua WHERE data LIKE '$data'");
 
   // consumototal.forEach((agua) {
   //   print(agua);
@@ -70,7 +70,7 @@ Future<String> getQuantia() async {
 
   Database db = await getDatabase();
   List<Map<String, dynamic>> consumototal = await db.rawQuery(
-      "select sum(consumo) from agua WHERE data LIKE '" + dateFormat + "'");
+      "select sum(consumo) from agua WHERE data LIKE '$dateFormat'");
 
   int consumo = int.parse(consumototal[0]['sum(consumo)'].toString());
   int meta = 2000;

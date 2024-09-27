@@ -17,13 +17,10 @@ void main() async {
     databaseFactory = databaseFactoryFfi;
   }
 
-  // Agua umdia = Agua(data: dateString, consumo: 1.6);
-  // insertDia(umdia);
-
   List dados = await findall();
   debugPrint(dados.toString());
 
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: TelaPrincipal(),
     debugShowCheckedModeBanner: false,
   ));
@@ -44,10 +41,11 @@ class TelaPrincipal extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ))),
           backgroundColor: const Color.fromRGBO(0, 151, 178, 1)),
-      body: ListView(
+      body: 
+       ListView(
         children: [
           FutureBuilder(
-              initialData: [],
+              initialData: const [],
               future: getConsumo(),
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
@@ -72,18 +70,18 @@ class TelaPrincipal extends StatelessWidget {
                         child: RichText(
                             text: TextSpan(
                                 text: "VOCÊ JÁ BEBEU ",
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 34.0, color: Colors.black),
                                 children: <TextSpan>[
                               TextSpan(
-                                text: consumo + "ml",
-                                style: TextStyle(
+                                text: "${consumo}ml",
+                                style: const TextStyle(
                                   fontSize: 34.0,
                                   color: Color.fromRGBO(0, 151, 178, 1),
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              TextSpan(
+                              const TextSpan(
                                 text: " HOJE!",
                                 style: TextStyle(
                                     fontSize: 34.0, color: Colors.black),
@@ -91,13 +89,13 @@ class TelaPrincipal extends StatelessWidget {
                             ])),
                       ),
                       // trailing: Image.asset("img/agua.png"),
-                      contentPadding: EdgeInsets.symmetric(
+                      contentPadding: const EdgeInsets.symmetric(
                           horizontal: 20.0, vertical: 50.0),
                     );
                 }
               }),
           FutureBuilder(
-              initialData: [],
+              initialData: const [],
               future: getQuantia(),
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
@@ -119,29 +117,29 @@ class TelaPrincipal extends StatelessWidget {
                     return ListTile(
                       title: Center(
                           child: Text(quantiatotal,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 24.0,
                               ))),
-                      tileColor: Color.fromRGBO(0, 151, 178, 1),
-                      contentPadding: EdgeInsets.symmetric(
+                      tileColor: const Color.fromRGBO(0, 151, 178, 1),
+                      contentPadding: const EdgeInsets.symmetric(
                           horizontal: 20.0,
                           vertical: 10.0), // Espaçamento interno
                     );
                 }
               }),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           ElevatedButton.icon(
-            icon: Icon(Icons.timer_outlined),
+            icon: const Icon(Icons.timer_outlined),
             onPressed: () {
               LocalNotifications.showPeriodicNotifications(
                   title: "Periodic Notification",
                   body: "This is a Periodic Notification",
                   payload: "This is periodic data");
             },
-            label: Text("Notificações periódicas"),
+            label: const Text("Lembre-me de beber!"),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Expanded(
               child: Container(
             color: Colors.white,
@@ -160,19 +158,21 @@ class TelaPrincipal extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Cadastro(),
+                builder: (context) => const Cadastro(),
               )).then((value) => null);
         },
-        child: Icon(Icons.add),
         elevation: 40,
         backgroundColor: const Color.fromRGBO(0, 151, 178, 1),
         heroTag: "btn1",
+        child: const Icon(Icons.add),
       ),
     );
   }
 }
 
 class Cadastro extends StatefulWidget {
+  const Cadastro({super.key});
+
   @override
   State<Cadastro> createState() => _CadastroState();
 }
@@ -192,7 +192,7 @@ class _CadastroState extends State<Cadastro> {
       ),
       body: ListView(
         children: [
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           TextButton(
             style: TextButton.styleFrom(
               backgroundColor: const Color.fromRGBO(0, 151, 178, 1),
@@ -204,7 +204,7 @@ class _CadastroState extends State<Cadastro> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => TelaPrincipal(),
+                      builder: (context) => const TelaPrincipal(),
                     )).then((value) => null);
               });
 
@@ -224,7 +224,7 @@ class _CadastroState extends State<Cadastro> {
                   fontWeight: FontWeight.bold,
                 )),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           TextButton(
             style: TextButton.styleFrom(
               backgroundColor: const Color.fromRGBO(0, 151, 178, 1),
@@ -236,7 +236,7 @@ class _CadastroState extends State<Cadastro> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => TelaPrincipal(),
+                      builder: (context) => const TelaPrincipal(),
                     )).then((value) => null);
               });
               // debugPrint("Coisas salvas: " + findall().toString());
@@ -256,9 +256,9 @@ class _CadastroState extends State<Cadastro> {
                   fontWeight: FontWeight.bold,
                 )),
           ),
-          SizedBox(height: 20),
-          Center(
-            child: Container(
+          const SizedBox(height: 20),
+          const Center(
+            child: SizedBox(
               width: 200.0,
               height: 100.0,
               child: ListTile(
@@ -294,7 +294,7 @@ void notificacao() async {
       await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
   if (initialNotification?.didNotificationLaunchApp == true) {
     // LocalNotifications.onClickNotification.stream.listen((event) {
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () {
       // print(event);
       navigatorKey.currentState!.pushNamed('/another',
           arguments: initialNotification?.notificationResponse?.payload);
@@ -334,7 +334,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         '/': (context) => const TelaPrincipal(),
-        '/another': (context) => Cadastro(),
+        '/another': (context) => const Cadastro(),
       },
     );
   }
